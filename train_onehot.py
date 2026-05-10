@@ -1,12 +1,10 @@
 import os
+import sys
 
-import numpy as np
 import torch
 import torch.nn as nn
 from quinine import QuinineArgumentParser
 from tqdm import tqdm
-
-np.set_printoptions(precision=4, suppress=True)
 
 from modeling_gpt2_onehot import GPT2Config, GPT2ModelOneHot
 from models import TransformerModelOneHot
@@ -121,7 +119,6 @@ def train(model, args, exp_name, device):
 
         # Attention inspection using the fixed reference batch from iteration 0
         xs_ref = torch.load(xs_ref_path, map_location=device)
-        ys_ref = torch.load(ys_ref_path, map_location=device)
 
         gpt2model = load_backbone(save_dir, args, device, loss=loss_mode)
         gpt2model = gpt2model.to(device)
@@ -170,6 +167,10 @@ def main(args):
 
 
 if __name__ == "__main__":
+    # Resolve bare config filenames against the conf/ directory
+    for i, arg in enumerate(sys.argv):
+        if arg.endswith(".yaml") and os.sep not in arg and "/" not in arg:
+            sys.argv[i] = os.path.join("conf", arg)
     parser = QuinineArgumentParser(schema=schema)
     args = parser.parse_quinfig()
     print(f"Running with: {args}")
