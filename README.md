@@ -41,6 +41,6 @@ Config files live in `conf/`. `in-context_onehot.yaml` inherits from `tiny_oneho
 
 ### Experiment Classes
 
-Files with the `_onehot` suffix correspond to experiments where the input is formatted in the style described in ["How do nonlinear transformers learn and generalize in in-context learning?"](https://arxiv.org/abs/2402.15449) — each basis element is one-hot encoded before being fed to the model.
+Files with the `_onehot` suffix correspond to experiments where the input is formatted in a more traditional ICL style, similar to that described in ["How do nonlinear transformers learn and generalize in in-context learning?"](https://arxiv.org/abs/2402.15607) — here it is simplified so that each basis element is one-hot encoded before being fed to the model, as are labels.
 
-Files without the `_onehot` suffix correspond to experiments with input constructed from raw sign pairs as the basis vectors.
+Files without the `_onehot` suffix correspond to experiments with input constructed from raw sign pairs as the basis vectors, in a format similar to ["What Can Transformers Learn In-Context? A Case Study of Simple Function Classes"](https://arxiv.org/abs/2208.01066).
