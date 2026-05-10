@@ -1,0 +1,13 @@
+name: icl-experiments
+channels:
+  - pytorch
+  - defaults
+dependencies:
+  - python=3.10
+  - pytorch
+  - numpy
+  - tqdm
+  - pip
+  - pip:
+    - quinine
+    - funcy

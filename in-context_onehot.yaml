@@ -1,0 +1,16 @@
+inherit:
+    - tiny_onehot.yaml
+
+model:
+    n_dims: 2
+    n_positions: 11
+    loss: multiclass
+
+training:
+    batch_size: 50000
+    learning_rate: .1
+    train_steps: 50
+
+exp_name: altpaper
+out_dir: .
+run_altpaper_adam: false
