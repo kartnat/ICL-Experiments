@@ -54,12 +54,6 @@ class TransformerModel(nn.Module):
         return zs[:, :-1, :]
 
     def forward(self, xs, ys, zs=None, inds=None):
-        if zs is not None:
-            hidden = self._backbone(inputs_embeds=zs).last_hidden_state
-            if self.loss == "softmax":
-                return F.softmax(self._read_out(hidden), dim=-1)
-            return hidden
-
         zs = self._combine(xs, ys)
         embeds = zs @ self.wte
         output = self._backbone(inputs_embeds=embeds).last_hidden_state
