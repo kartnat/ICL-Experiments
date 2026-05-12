@@ -104,7 +104,9 @@ class GPT2Attention(nn.Module):
         self.layer_idx = layer_idx
         self.scale_attn_by_inverse_layer_idx = config.scale_attn_by_inverse_layer_idx
 
+        self.k_attn = nn.Linear(self.embed_dim, self.embed_dim, bias=False)
         self.q_attn = nn.Linear(self.embed_dim, self.embed_dim, bias=False)
+        self.v_attn = nn.Linear(self.embed_dim, self.embed_dim, bias=False)
         self.register_buffer("K", torch.eye(self.embed_dim))
         self.register_buffer("V", torch.eye(self.embed_dim))
 
@@ -122,8 +124,13 @@ class GPT2Attention(nn.Module):
         shape = (*hidden_states.shape[:-1], -1, self.head_dim)
 
         q = self.q_attn(hidden_states).view(shape).transpose(1, 2)
-        k = (hidden_states @ self.K).view(shape).transpose(1, 2)
-        v = (hidden_states @ self.V).view(shape).transpose(1, 2)
+        if self.layer_idx == 0:
+            k = self.k_attn(hidden_states).view(shape).transpose(1, 2)
+            v = self.v_attn(hidden_states).view(shape).transpose(1, 2)
+            #v = (hidden_states @ self.V).view(shape).transpose(1, 2)
+        else:
+            k = (hidden_states @ self.K).view(shape).transpose(1, 2)
+            v = (hidden_states @ self.V).view(shape).transpose(1, 2)
 
         attn_out, attn_weights = _eager_attention_forward(
             self, self.layer_idx, q, k, v, head_mask
