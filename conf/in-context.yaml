@@ -4,12 +4,13 @@ inherit:
 model:
     n_dims: 2
     n_positions: 11
-    loss: multiclass
+    loss: mse
 
 training:
     batch_size: 50000
-    learning_rate: .5
-    train_steps: 50
+    learning_rate: .1
+    train_steps: 100
 
 exp_name: signpair
 out_dir: .
+use_fullbatch: true
